@@ -111,7 +111,7 @@ _sll:   #realiza deslocamento de 3 bits à esquerda do primeiro número(shift le
 	syscall #faz a syscall
 	
 	
-_srl:   #realiza deslocamento de 1 bit à esquerda do segundo número(shift right logical)
+_srl:   #realiza deslocamento de 1 bit à direita do segundo número(shift right logical)
   	li $v0, 4 #print_string syscall
 	la $a0, $srl  #imprime "\nSRL: "
 	syscall #faz a syscall
