@@ -1,38 +1,33 @@
-.data
-$soma: .asciiz  "soma: \n" #declara variavel soma como 'soma: \n'
-$subtracao: .asciiz "\nsubtracao: \n" #declara variavel subtracao como 'subtracao: \n'
-$and: .asciiz "\nand: \n" #declara variavel multiplicacao como 'and: \n'
-$or: .asciiz "\nor: \n" #declara variavel divisao como 'or: \n'
-$xor: .asciiz "\nxor: \n" #declara variavel divisao como 'xor: \n'
+	.data
+		
+$soma: .asciiz  "ADD: " #declara variavel soma como 'soma: \n'
+$subtracao: .asciiz "\nSUB: " #declara variavel subtracao como 'subtracao: \n'
+$and: .asciiz "\nAND: " #declara variavel multiplicacao como 'and: \n'
+$or: .asciiz "\nOR: " #declara variavel divisao como 'or: \n'
+$xor: .asciiz "\nXOR: " #declara variavel divisao como 'xor: \n'
+$sll: .asciiz "\nSLL(3): " #declara variavel multiplicacao como 'multiplicacao: \n'
+$srl: .asciiz "\nSRL(1): " #declara variavel divisao como 'divisao: \n'
 
-$num1: .asciiz "\nInsira o primeiro valor:\n"
-$num2: .asciiz "\nInsira o segundo valor:\n"
-
-.text
-main:
-	li $v0,4 #print_int na tela
-	la $a0, $num1 #carrega o 1 num
-	syscall 
+	.text
 	
+main:
 	li $v0, 5 #le entrada do user
 	syscall 
 	
-	move $s0, $v0 # move conteúdo de $v0 para $s0
-	
-	li $v0,4 #print_int na tela
-	la $a0, $num2 #carrega o 2 num
-	syscall 
-	
+	move $s0, $v0 # move conteï¿½do de $v0 para $s0
+		
 	li $v0, 5 #le input do user
 	syscall 
 	
-	move $s1, $v0 # move conteúdo de $v0 para $s1
+	move $s1, $v0 # move conteï¿½do de $v0 para $s1
 
 	jal _soma
 	jal _subtracao
 	jal _and
 	jal _or
 	jal _xor
+	jal _sll
+	jal _srl
 	j termina #desvia para "termina"
 	
 _soma:
@@ -90,6 +85,25 @@ _xor:
 	la $a0, ($s2) #coloca o registrador $s2 para ser impresso
 	syscall  
 	 
+_sll: 
+	li $v0, 4
+	la $a0, $sll
+	syscall
+		
+	sll $s2, $s0, 3
+	li $v0,1 
+	la $a0, ($s2) #coloca o registrador $s2 para ser impresso
+	syscall
+	
+_srl:
+  	li $v0, 4
+	la $a0, $srl
+	syscall
+		
+	srl $s2, $s1, 1
+	li $v0,1 
+	la $a0, ($s2) #coloca o registrador $s2 para ser impresso
+	syscall
 	
 termina:
 		
