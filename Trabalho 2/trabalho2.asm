@@ -11,9 +11,12 @@ main:
 	
 	li $v0, 5 # numero do usuario
 	syscall		
-	move $t0, $v0 # numero do user para t0	
-	 
-	bltz $t0, invalid # se $t0 <= 0 entao invalida
+	move $t0, $v0 # copia numero do usuário para t0	
+	
+	slti $t1, $t0, 128  #(arg < 128) -> retorna true ou false
+	beq $t3, $t1, invalid #se t2 for true retorna, se false error 
+	
+	#bltz $t0, invalid # se $t0 <= 0 entao vai pra invalid
 	
 	#printar $t2 pra ver se ta passando na funcao
 	li $v0, 1 #carrega print_int em $v0
