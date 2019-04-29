@@ -15,7 +15,7 @@ main:
 	
 	beq $v0, 0, imprime_resultado 		# Se a entrada for 0, desvia para a rotina de impressão do resultado 
 	bge $v0, 128, se_invalida 		# Se a entrada for igual ou maior que 128, desvia para a rotina de tratamento de entrada invalida 
-	ble $v0, -1, se_invalida
+	ble $v0, -1, se_invalida		# Se a entrada for negativa, desvia para a rotina de impressão do resultado 
 	
 	move $t4, $t2 				# Move o valor de entrada no registrador $t4
 			 
@@ -40,28 +40,7 @@ calcula_paridade: # Rotina para verificar a paridade é par ou ímpar
     	
 paridade_par:	# Rotina para ligar o bit mais significativo do número por meio da adiçã de 128
 	add $t4, $t4, 128			# Adiciona o 128 para que o número de bits ligados seja 1
-	li $v0, 4				# Para imprimir mensagem
-	la $a0, bit_paridade			# Imprime "bit-paridade: "
-	syscall					# Faz a chamada do sistema
-	
-	li $v0, 1				# Para imprimir inteiro
-	move $a0, $t3				# Imprime o valor do bit de paridade
-	syscall					# Faz a chamada do sistema
-
-	li $v0, 4				# Para imprimir mensagem
-	la $a0, saida				# Imprime "saida: "
-	syscall					# Faz a chamada do sistema
-	
-	li $v0, 1				# Para imprimir inteiro
-	move $a0, $t4				# Imprime valor final do número
-	syscall					# Faz a chamada do sistema
-	
-	li $v0, 4				# Para imprimir mensagem
-	la $a0, quebra_linha			# Imprimre "\n"
-	syscall					# Faz a chamada do sistema
-	
-	li $v0, 10 				# termina o programa
-    	syscall					# Faz a chamada do sistema
+	j imprime_resultado
 	    	
 imprime_resultado: # Rotina que imprime os resultados
 	li $v0, 4				# Para imprimir mensagem
