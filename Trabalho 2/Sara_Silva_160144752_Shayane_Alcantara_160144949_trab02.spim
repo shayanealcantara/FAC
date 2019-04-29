@@ -26,8 +26,8 @@ faz_divisao: 	# Rotina que faz a divisão sucessiva do número de entrada em
 	j faz_divisao				# Retorna ao inicio da rotina para fazer o loop
 
 faz_icremento:	# Rotina que soma a quantidade de restos 1 da divisão
-	add $t1, $t1, 1			# Soma 1 no registrador $t1
-	beq $t2, 0, calcula_paridade		# Se o resultado da divisão chegou em zero, desvia para rotina que calcula a paridade
+	add $t1, $t1, 1				# Soma 1 no registrador $t1
+	beq $t2, 0, calcula_paridade		# Se o $t2 chegou em zero, desvia para rotina que calcula a paridade
 	j faz_divisao				# Vai para a rotina que faz a divisão do número
 	
 calcula_paridade: # Rotina para verificar a paridade é par ou ímpar
@@ -39,7 +39,7 @@ calcula_paridade: # Rotina para verificar a paridade é par ou ímpar
 	beq $t3, 1, paridade_par		# Se for 1, desvia para rotina que transfomar faz a paridade par
     	
 paridade_par:	# Rotina para ligar o bit mais significativo do número por meio da adiçã de 128
-	add $t4, $t4, 128			# Adiciona o 128 para que o número de bits ligados seja 1
+	add $t4, $t4, 128			# Adiciona o 128 para que o número de bits ligados seja ímpar
 	j imprime_resultado
 	    	
 imprime_resultado: # Rotina que imprime os resultados
