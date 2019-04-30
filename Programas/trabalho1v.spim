@@ -1,0 +1,127 @@
+.data
+add1: .asciiz "ADD: "
+sub1: .asciiz "SUB: "
+and1: .asciiz "AND: "
+or1: .asciiz "OR: "
+xor1: .asciiz "XOR: "
+sll3: .asciiz "SLL(3): "
+srl1: .asciiz "SRL(1): "
+newline: .asciiz "\n
+
+.text
+main:
+#le o primeiro valor
+li $v0, 5
+syscall
+#armazena o primeiro valor em t0
+move $t0, $v0
+#le o segundo valor
+li $v0,5
+syscall
+#armazena o segundo valor em t1
+move $t1,$v0
+
+li $v0, 4 #print_string
+la $a0, add1 #carrega a string de add em a0
+syscall
+#faz a soma de t0 com t1 e armazena em t2
+add $t2, $t0, $t1
+
+move $a0, $t2 #carrega o t2 em a0
+
+li $v0, 1 #print_int
+syscall
+
+li $v0, 4 #print newline
+la $a0, newline
+syscall
+
+
+
+li $v0, 4 #printa a string de sub
+la $a0, sub1 #carrega a string de sub em a0
+syscall
+sub $t2, $t0, $t1 #faz a sub de t0 com t1 e coloca em t2
+
+move $a0, $t2 #carrega t2 em a0
+
+li $v0,1 #print_int
+syscall
+
+li $v0, 4 #print newline
+la $a0, newline
+syscall 
+
+li $v0, 4 #print_string
+la $a0, and1 #carrega a string do and em a0
+syscall
+and $t2, $t0, $t1 #faz o and de t0 com t1 e coloca em t2
+
+move $a0, $t2 #move t2 para a0
+
+li $v0, 1 #print_int
+syscall
+
+li $v0, 4 #print newline
+la $a0, newline
+syscall
+
+li $v0, 4 #print string
+la $a0, or1 #carrega a string do or em a0
+syscall
+
+or $t2, $t0, $t1 #faz o or de t0 com t1 e coloca em t2
+
+move $a0, $t2 #coloca t2 em a0
+
+li $v0, 1 #print_int
+syscall
+
+li $v0, 4 #print newline
+la $a0, newline
+syscall
+
+li $v0, 4 #print_string
+la $a0, xor1 #carrega string xor em a0
+syscall
+xor $t2, $t0, $t1 #faz o xor de t0 e t1 e coloca em t2
+
+move $a0, $t2 #carrega t2 em a0
+
+li $v0, 1 #print_int
+syscall
+
+li $v0, 4 #print newline
+la $a0, newline
+syscall
+
+move $t2, $t0 #move t0 para r2
+
+li $v0, 4
+la $a0, sll3 #print_string
+syscall
+sll $t3,$t2,3 #coloca t2 deslocado de 3 bits em t3
+
+move $a0, $t3 #move t3 para a0
+
+li $v0, 1 #print_int
+syscall
+
+li $v0, 4 #print newline
+la $a0, newline
+syscall
+ 
+move $t2, $t1 #move t1 para r2
+
+li $v0, 4
+la $a0, srl1 #print_string
+syscall
+srl $t3,$t2,1 #coloca t2 deslocado de 1 bit em t3
+
+move $a0, $t3 #move t3 para a0
+
+li $v0, 1
+syscall
+
+li $v0, 10 #exit
+syscall

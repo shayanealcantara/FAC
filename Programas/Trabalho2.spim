@@ -1,0 +1,99 @@
+.data
+	.globl main
+	NewLine: .asciiz "\n"
+	Print: .asciiz "entrada incorreta"
+	Saida1: .asciiz "bit-paridade: "
+	Saida2: .asciiz "saida: "
+.text
+	main:
+		#Leitura do numero
+		li $v0, 5
+		syscall
+		move $t0, $v0
+		
+
+		#Restricao
+		ble $t0, 127, Continue
+		li $v0, 4
+		la $a0, Print
+		syscall
+		
+		#Nova linha
+	 	li $v0, 4
+	 	la $a0, NewLine
+	 	syscall
+		
+		li $v0, 10
+		syscall
+				
+	Continue:
+		#0000 0000 0000 0000 0000 0000 0000 0000
+		srl $t1, $t0, 16
+		xor $t2, $t0, $t1
+		srl $t1, $v0, 8
+		xor $t2, $t2, $t1
+		srl $t1, $t2, 4
+		xor $t2, $t2, $t1
+		srl $t1, $t2, 2
+		xor $t2, $t2, $t1
+		srl $t1, $t2, 1
+		xor $t2, $t2, $t1
+		and $t2, $t2, 1
+		 		
+		#Bit de Paridade
+		li $v0, 4
+		la $a0, Saida1
+		syscall
+		
+		li $v0, 1
+		move $a0, $t2
+		syscall
+		
+		#Nova linha
+	 	li $v0, 4
+	 	la $a0, NewLine
+	 	syscall
+		
+		beq $t2, 1, Paridade1 
+		li $v0, 4
+		la $a0, Saida2
+		syscall
+		
+		li $v0, 1
+		move $a0, $t0
+		syscall
+	 	
+	 	#Nova linha
+	 	li $v0, 4
+	 	la $a0, NewLine
+	 	syscall
+	 	
+	 	li $v0, 10
+	 	syscall
+	 	
+	 	
+	 Paridade1:
+	 	
+	 	sll $t3,$t2,7 
+	 	add $t4, $t3, $t0
+		la $a0, Saida2
+		syscall
+		
+	 	
+		li $v0, 1
+		move $a0, $t4
+		syscall
+		
+	 	#Nova linha
+	 	li $v0, 4
+	 	la $a0, NewLine
+	 	syscall
+	 	
+		li $v0, 10
+	 	syscall
+		
+		
+	
+	 	
+		
+		  

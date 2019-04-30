@@ -1,0 +1,22 @@
+main: 
+	#Pegar numero 1 do usuario
+	li $v0, 5 #read_int no $v0
+	syscall
+	move $t0, $v0 #mover o n�mero lido para $t0
+	
+	#Pegar numero 2 do usuario
+	li $v0, 5 #read_int no $v0
+	syscall
+	move $t1, $v0 #mover o número lido para $t1
+	
+	sub $t2, $t0, $t1 #faz a subtração
+	
+	#printar $t2
+	move $a0, $t2 #mover o número para printar em $a0
+	li $v0, 1 #carrega print_int em $v0
+	syscall
+	
+	li $v0, 10 #sair do programa
+	syscall
+	
+	
