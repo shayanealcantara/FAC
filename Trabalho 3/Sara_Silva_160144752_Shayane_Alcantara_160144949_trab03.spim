@@ -1,0 +1,53 @@
+	.data
+	
+invalida: .asciiz "Entrada invalida.\n"  	# Mensagem que será exibida caso a entrada não esteja entre 1 e 32768 
+aqui: .asciiz "aqui\n"      			# Só pra saber se o loop ta desviando certo
+quebra_linha: .asciiz "\n"
+
+	.text
+	
+main:
+	li $v0, 5 				#Leitura de um inteiro
+	syscall  				#Faz a chamada do sistema
+	
+	move $s0, $v0  				#Coloca o conteúdo de $v0 em $s0
+	
+	slti $t1, $s0, 2 			#Verifica se $s0 é menor que 2 
+	bne $t1, $zero, se_invalida  		#Se for menor que 2, desvia para rotina de tratamento de entrada invalida
+	
+	bge $s0, 32768, se_invalida  		#Verifica se $s0 é maior ou igual a 32768, se for, desvia para rotina que trata entrada invalida
+	
+fator_2:	# Rotina que verifica se 2 é fator do número
+	div $s0, $s0, 2  			# Divide o número por 2
+	mfhi $t3         			# Salva o resto da divisão no registrador $t3
+	beq $t3, $zero, imprime_2  		# Se o resto for igual 0 então 2 é fator e precisa ser impresso
+	
+	j fatores_impares          		# Se 2 não for mais um fator, desvia para rotina de possíveis fatores ímpares
+	
+imprime_2:	# Rotina para imprimir o número 2 como fator
+	li $v0, 1   				# Impressão de um inteiro
+	la $a0, 2   				# Imprime 2
+	syscall     				# faz a chamada do sistema
+	
+	li $v0, 4  				# Impressão de string
+	la $a0, quebra_linha 			# Imprime quebra linha a cada 2 impresso
+	syscall   				# Faz a chamada do sistema
+	 
+	j fator_2  				# Retorna para fator_2 para verificar se há mais fatores 2 para o número
+	
+fatores_impares:	# Verifica os possíveis fatores ímpares
+	li $v0, 4				# Impressão de string
+	la $a0, aqui				# só pra testar
+	syscall					# Faz a chamada do sistema
+	
+	li $v0, 10				# Finaliza o programa
+	syscall					# Faz a chamada do sistema
+		
+se_invalida:	# Rotina que trata as entrandas inválidas
+	li $v0, 4 				# Impressão de string
+	la $a0, invalida 			# Imprime "Entrada invalida.\n"
+	syscall   				# Faz a chamada do sistema
+	
+	li $v0, 10  				# Finaliza o programa
+	syscall  				# Faz a chamada do sistema
+	
