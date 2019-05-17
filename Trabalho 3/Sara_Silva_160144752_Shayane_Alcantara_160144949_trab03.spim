@@ -62,12 +62,12 @@ imprime_fator_impar:				# Rotina para imprimir o fator ímpar
 	ble $t5, $s0, fatores_impares		# Se $s0 ainda for menor que o primo ao quadrado, faz a verificação novamente
 
 proximo_primo:					# Rotina que calcula o próximo primo
-	addi $t4, $t4, 2			# Como os próximos primos sempre serão ímpar, $t4 pula de 2 em 2
-	mul $t5, $t4, $t4			# Atualiza $t5 de acordo com o primo atual
+	addi $t4, $t4, 2			# Como os próximos primos sempre serão ímpares, $t4 pula de 2 em 2
+	mul $t5, $t4, $t4			# Atualiza $t5 de acordo com o novo primo
 	
 	ble $t5, $s0, fatores_impares		# Se $s0 ainda for menor que o primo ao quadrado, faz a verificação novamente
 		
-se_primo:					# Se o número for primo, ele é impresso como fator
+se_primo:					# Se o número atual for primo, ele é impresso como fator
 	ble $s0,1, termina_programa		# Se o número for menor ou igual a 1, termina o programa
 	
 	li $v0, 1   				# Impressão de um inteiro
