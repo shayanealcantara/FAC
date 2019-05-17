@@ -16,7 +16,7 @@ main:
 
 	bge $s0, 32768, se_invalida  		#Verifica se $s0 é maior ou igual a 32768, se for, desvia para rotina que trata entrada invalida
 	
-	move $t7, $s0				# $t7 vai ser usado como variável auxiliar
+	move $t7, $s0				# $t7 vai ser usado como registrador auxiliar
 
 fatores_2:					# Rotina que verifica se 2 é fator do número, o único primo par
 	div $t7, $t7, 2  			# Divide o número por 2
@@ -67,8 +67,7 @@ proximo_primo:					# Rotina que calcula o próximo primo
 	ble $t5, $s0, fatores_impares		# Se $s0 for menor que o primo ao quadrado, volta para fazer a verificação novamente
 		
 se_primo:					# Imprimir o último fator
-	slti $t6, $s0, 1			# Verifica se é menor que 1
-	beq $t6, 1, se_invalida			# Desvia caso seja
+	ble $s0,1, termina_programa			# Desvia caso seja
 	
 	li $v0, 1   				# Impressão de um inteiro
 	la $a0, ($s0)   			# Imprime o último fator
@@ -78,14 +77,14 @@ se_primo:					# Imprimir o último fator
 	la $a0, quebra_linha 			# Imprime quebra de linha
 	syscall   				# Faz a chamada do sistema
 	
-	li $v0, 10  				# Finaliza o programa
-	syscall  				# Faz a chamada do sistema
- 	
+	j termina_programa 	
+
 se_invalida:					# Rotina que trata as entrandas inválidas
 	li $v0, 4 				# Impressão de string
 	la $a0, invalida 			# Imprime "Entrada invalida.\n"
 	syscall   				# Faz a chamada do sistema
-
+	
+termina_programa:
 	li $v0, 10  				# Finaliza o programa
 	syscall  				# Faz a chamada do sistema
-
+	
