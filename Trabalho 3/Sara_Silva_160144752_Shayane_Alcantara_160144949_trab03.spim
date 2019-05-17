@@ -23,7 +23,7 @@ fatores_2:					# Rotina que verifica se 2 é fator do número, o único primo pa
 	mfhi $t3         			# Salva o resto da divisão no registrador $t3
 	beq $t3, $zero, imprime_2  		# Se o resto for igual 0 então 2 é fator e precisa ser impresso
 
-	add $t4, $t4, 3				# primeiro primo possível
+	add $t4, $t4, 3				# primeiro primo ímpar possível
 	add $t5, $t5, 9				# t5 = 3²
 	j fatores_impares          		# Se 2 não for mais um fator, desvia para rotina de possíveis fatores ímpares
 
@@ -40,7 +40,7 @@ imprime_2:					# Rotina para imprimir o número 2 como fator
 	
 	j fatores_2  				# Retorna para fator_2 para verificar se há mais fatores 2 para o número
 
-fatores_impares:				# Verifica os possíveis fatores ímpares
+fatores_impares:				# Veri	fica os possíveis fatores ímpares
 	move $t7, $s0				# Atualiza o $t7
 	div $t7, $t7, $t4 			# Divide o número pelo primo atual
 	mfhi $t3         			# Salva o resto da divisão no registrador $t3
