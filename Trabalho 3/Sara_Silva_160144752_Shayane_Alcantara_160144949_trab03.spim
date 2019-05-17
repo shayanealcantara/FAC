@@ -1,9 +1,6 @@
-.data
+	.data
 
 invalida: .asciiz "Entrada invalida.\n"  	# Mensagem que será exibida caso a entrada não esteja entre 1 e 32768 
-aqui: .asciiz "aqui\n"      			# Só pra saber se o loop ta desviando certo
-aqui_2: .asciiz "aqui2\n"      			# Só pra saber se o loop ta desviando certo
-aqui_3: .asciiz "aqui3\n"      			# Só pra saber se o loop ta desviando certo
 quebra_linha: .asciiz "\n"
 
 	.text
