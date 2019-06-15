@@ -4,10 +4,9 @@
 
 	.data
 
-$crc: .asciiz "CRC16­BUYPASS: " # String que acompanhará a saída 		
-$quebra_linha: .asciiz "\n"  # Variável para quebrar a linha após a saída
+crc: .asciiz "CRC16­BUYPASS: " # String que acompanhará a saída 		
+quebra_linha: .asciiz "\n"  # Variável para quebrar a linha após a saída
 buffer: .space 16 # Para pegar 16 bytes do buffer
-espaco: .asciiz " "
 
 	.text
 	
@@ -36,32 +35,27 @@ crc16:
 # p = $t3, s = $t4, t = $t5 sao valores intermediarios	
 #	add $t1, $t1, 0
 	srl $t6, $t1, 8			# t6 = c >> 8
-	
-	#########################################################
-	li $v0, 11
-	la $a0, ($s0) 			#print pra testar $t4(s)
-	syscall
-
-	li $v0, 4
-	la $a0, espaco 			#print pra testar $t4(s)
-	syscall
-	
 	xor $t4, $s0, $t6		# s = d ^ (c >> 8)
-	
+	and $t4, $t4, 255
 	
 	srl $t6, $t4, 4			# t6 = s >> 4
 	xor $t3, $t4, $t6		# p = s ^ ( s >> 4)
+	and $t3, $t3, 255
 	
 	srl $t6, $t3, 2			# t6 = p >> 2
 	xor $t3, $t3, $t6		# p = p ^ (p >> 2)
+	and $t3, $t3, 255
 	
 	srl $t6, $t3, 1			# t6 = p >> 1
 	xor $t3, $t3, $t6		# p = p ^ (p >> 1)
+	and $t3, $t3, 255
 	
 	and $t3, $t3, 1			# p = p & 1
+	and $t3, $t3, 255
 	
 	sll $t6, $t4, 1			# t6 = s << 1
 	or $t5, $t3, $t6		# t = p | (s << 1)
+	and $t5, $t5, 65535
 	
 	sll $t6, $t1, 8			# t6 = c << 8
 	sll $t7, $t5, 15		# t7 = t << 15
@@ -70,8 +64,9 @@ crc16:
 	xor $t9, $t6, $t7		# t9 = (c << 8) ^ (t << 15)
 	xor $t2, $t9, $t5		# r = (c << 8) ^ (t << 15) ^ t
 	xor $t2, $t2, $t8		# r = r ^ (t << 1)
+	and $t2, $t2, 65535
 	
-	add $t1, $t1, $t2			# c = r
+	move $t1, $t2			# c = r
 	#li $v0, 1
 	#la $a0, ($t4) 			#print pra testar $t4(s)
 	#syscall
@@ -79,11 +74,19 @@ crc16:
 	add $t0, $t0, 1  
 	j loop
 	
-termina: 
-	#li $v0, 1
-	#la $a0, ($t1) 			#print pra testar $t4(s)
-	#syscall
+termina:
+	li $v0, 4
+	la $a0, crc
+	syscall
 	
+	and $t2, $t2, 65535
+	li $v0, 4
+	la $a0, ($t2) 			#print pra testar $t4(s)
+	syscall
+	
+	li $v0, 4
+	la $a0, quebra_linha
+	syscall
 	
 	li $v0, 10			# Para finalizar o programa
 	syscall				# Faz a chamada do sistema
